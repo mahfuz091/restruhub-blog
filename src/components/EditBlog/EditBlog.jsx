@@ -189,7 +189,7 @@ export default function EditBlog({ id }) {
       }
 
       toast.success(status === "DRAFT" ? "Draft saved" : "Blog updated");
-      router.push("/dashboard/blog");
+      router.push("/dashboard");
       router.refresh();
     } catch (error) {
       console.error(error);

@@ -202,7 +202,7 @@ export default function AddBlog() {
 
       toast.success(status === "DRAFT" ? "Draft saved" : "Blog published");
       resetBlogState();
-      router.push("/dashboard/blog");
+      router.push("/dashboard");
       router.refresh();
     } catch (error) {
       console.error(error);

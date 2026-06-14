@@ -184,7 +184,7 @@ export const postCreate = async (_prevState, formData) => {
     });
 
     revalidatePath("/dashboard");
-    revalidatePath("/dashboard/blog");
+    revalidatePath("/dashboard");
 
     return {
       success: true,
