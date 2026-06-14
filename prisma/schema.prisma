@@ -1,0 +1,76 @@
+generator client {
+  provider      = "prisma-client-js"
+  output        = "../src/generated/prisma"
+  binaryTargets = ["native", "debian-openssl-3.0.x", "rhel-openssl-3.0.x"]
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+model User {
+  id           String   @id @default(uuid())
+  email        String   @unique
+  name         String?
+  profileImage String?
+  password     String
+  role         Role     @default(AUTHOR)
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+  posts        Post[]
+}
+
+model Post {
+  id              String        @id @default(uuid())
+  title           String
+  postSlug        String        @unique
+  shortDesc       String?
+  bannerImage     String
+  bannerAltText   String?
+  metaTitle       String?       @db.VarChar(160)
+  metaDescription String?       @db.VarChar(200)
+  canonicalUrl    String?
+  content         Json
+  authorId        String?
+  createdAt       DateTime      @default(now())
+  updatedAt       DateTime      @updatedAt
+  blogCategoryId  String?
+  status          PostStatus    @default(DRAFT)
+  Comment         Comment[]
+  author          User?         @relation(fields: [authorId], references: [id])
+  BlogCategory    BlogCategory? @relation(fields: [blogCategoryId], references: [id])
+
+  @@index([authorId], map: "author_idx")
+}
+
+model Comment {
+  id        String   @id @default(uuid())
+  name      String
+  email     String
+  content   String
+  approved  Boolean?
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  postId    String
+  post      Post     @relation(fields: [postId], references: [id])
+}
+
+model BlogCategory {
+  id        String   @id @default(uuid())
+  name      String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  Post      Post[]
+}
+
+enum Role {
+  ADMIN
+  AUTHOR
+}
+
+enum PostStatus {
+  DRAFT
+  PENDING
+  APPROVED
+  DECLINE
+}

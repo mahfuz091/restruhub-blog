@@ -1,0 +1,3 @@
+# .nextignore
+**/Application Data/**
+**/AppData/**
